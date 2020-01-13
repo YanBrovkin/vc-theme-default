@@ -1,5 +1,5 @@
 {
-    "name": "ViroCommerce",
+    "name": "virtocommerce",
     "dependencies": {
         "jquery": "1.11.0",
         "underscore": "1.8.3",
