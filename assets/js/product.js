@@ -15,6 +15,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
         $scope.addToWishlistDisabled = false;
         $scope.availableLists = null;
         $scope.listType = null;
+        $scope.averageRating = null;
 
         $scope.addProductToCart = function (product, quantity) {
             var dialogData = toDialogDataModel(product, quantity);
@@ -49,6 +50,27 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             $scope.listType = lists.default_list_type;
         }
 
+        $scope.addRating = function() {
+            var currentProduct = $scope.selectedVariation;
+            if (!currentProduct) {
+                return;
+            }
+            if (!$scope.reviewDescription) {
+                return;
+            }
+            var review = {
+                productId: currentProduct.id,
+                content: $scope.reviewDescription,
+                rating: $scope.reviewRating
+            };
+            catalogService.addReview(currentProduct.id, review);
+        }
+
+        var maxRate = 5;       
+        $scope.getRepeater = function () {
+            return new Array(maxRate);
+        }
+
         function toDialogDataModel(product, quantity) {
             return {
                 imageUrl: product.primaryImage ? product.primaryImage.url : null,
@@ -81,6 +103,7 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
                 });
 
                 $scope.selectedVariation = product;
+                $scope.averageRating = product.averageRating;
             });
         };
 

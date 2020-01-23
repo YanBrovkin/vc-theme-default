@@ -189,6 +189,10 @@
         {% endif %}
         
         {% if shop.customer_reviews_enabled and product.customer_reviews.size > 0 %}
+        <h4> Average rating</h4>
+        <div>
+            <span class="star-icon" ng-repeat="r in getRepeater() track by $index" ng-class="{'full': ($index + 1) <= selectedVariation.averageRating}">☆</span>
+        </div>
         <h4>Customer reviews</h4>
         {% for review in product.customer_reviews limit:5 %}
         <p>
@@ -199,6 +203,23 @@
             </time>
         </p>
         {% endfor %}
+
+        {% if customer.is_registered_user %}
+            <form ng-submit="addRating()" ng-controller="productController">
+                <fieldset>
+                    <legend>Add your review:</legend>
+                    Description: <input type="text" ng-model="reviewDescription" name="reviewDescription" value="some opinion">
+                    Rating: 
+                    <div class="js-qty">
+                        <input class="js-num" min="0" max="5" name="reviewRating" type="number" ng-model="reviewRating" />
+                        <span class="js--qty-adjuster js--add" ng-click="reviewRating = reviewRating + 1" ng-hide="reviewRating >= 5">+</span>
+                        <span class="js--qty-adjuster js--minus" ng-click="reviewRating = reviewRating - 1" ng-hide="reviewRating <= 0">-</span>
+                    </div>
+                    <input type="number" ng-model="reviewRating" name="reviewRating" value="0" min="0" max="5" class="quantity-selector">
+                    <input type="submit" id="submit" value="Submit" />
+                </fieldset>
+            </form>
+        {% endif %}
         {% endif %}
     </div>
 </div>
