@@ -194,18 +194,17 @@
             <span class="star-icon" ng-repeat="r in getRepeater() track by $index" ng-class="{'full': ($index + 1) <= selectedVariation.averageRating}">☆</span>
         </div>
         <h4>Customer reviews</h4>
-        {% for review in product.customer_reviews limit:5 %}
-        <p>
-            {{ review.content }}
+        <p ng-repeat="review in selectedVariation.customerReviews">
+        {% raw %}
+            {{ review.content }} 
             <br>
-            <time pubdate datetime="{{ review.created_date | date: 'yyyy-MM-dd' }}">
-                <em class="text-light">{{ review.created_date | date: 'month_day_year' }}</em>
+            <time pubdate datetime="{{ review.createdDate | date: 'yyyy-MM-dd' }}">
+                <em class="text-light">{{ review.createdDate | date: 'MMM d, yyyy' }}</em>
             </time>
+        {% endraw %}
         </p>
-        {% endfor %}
-
         {% if customer.is_registered_user %}
-            <form ng-submit="addRating()" ng-controller="productController">
+            <form ng-submit="addRating()">
                 <fieldset>
                     <legend>Add your review:</legend>
                     Description: <input type="text" ng-model="reviewDescription" name="reviewDescription" value="some opinion">
@@ -215,7 +214,6 @@
                         <span class="js--qty-adjuster js--add" ng-click="reviewRating = reviewRating + 1" ng-hide="reviewRating >= 5">+</span>
                         <span class="js--qty-adjuster js--minus" ng-click="reviewRating = reviewRating - 1" ng-hide="reviewRating <= 0">-</span>
                     </div>
-                    <input type="number" ng-model="reviewRating" name="reviewRating" value="0" min="0" max="5" class="quantity-selector">
                     <input type="submit" id="submit" value="Submit" />
                 </fieldset>
             </form>

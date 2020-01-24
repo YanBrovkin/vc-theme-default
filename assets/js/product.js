@@ -61,9 +61,15 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             var review = {
                 productId: currentProduct.id,
                 content: $scope.reviewDescription,
-                rating: $scope.reviewRating
+                rating: $scope.reviewRating,
+                createdDate: new Date()
             };
-            catalogService.addReview(currentProduct.id, review);
+            catalogService.addReview(currentProduct.id, review).then(function(response) {
+                if (response.status != 204) {
+                    return;
+                }
+                currentProduct.customerReviews.push(review);
+            });
         }
 
         var maxRate = 5;       
