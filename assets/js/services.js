@@ -109,8 +109,8 @@ storefrontApp.service('catalogService', ['$http', function($http, $localStorage)
         searchCategories: function (criteria) {
             return $http.post('storefrontapi/categories/search', criteria);
         },
-        addReview: function (productId, review) {
-            return $http.post('storefrontapi/products/' + productId + '/review', review)
+        addReview: function (review) {
+            return $http.post('storefrontapi/products/' + review.productId + '/review', review)
         }
     }
 }]);
