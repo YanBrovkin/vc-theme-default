@@ -49,6 +49,33 @@ storefrontApp.controller('productController', ['$rootScope', '$scope', '$window'
             $scope.listType = lists.default_list_type;
         }
 
+        $scope.addRating = function() {
+            var currentProduct = $scope.selectedVariation;
+            if (!currentProduct) {
+                return;
+            }
+            if (!$scope.reviewDescription) {
+                return;
+            }
+            var review = {
+                productId: currentProduct.id,
+                content: $scope.reviewDescription,
+                rating: $scope.reviewRating,
+                createdDate: new Date()
+            };
+            catalogService.addReview(review).then(function(response) {
+                if (response.status != 204) {
+                    return;
+                }
+                currentProduct.customerReviews.push(review);
+            });
+        }
+
+        var maxRate = 5;       
+        $scope.getRepeater = function () {
+            return new Array(maxRate);
+        }
+
         function toDialogDataModel(product, quantity) {
             return {
                 imageUrl: product.primaryImage ? product.primaryImage.url : null,
